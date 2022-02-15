@@ -347,8 +347,8 @@ class DVT_T2t_vit_14_model(nn.Module):
                                        **kwargs)
 
     def resize_batch(self, x, features_to_be_reused_list, relations_to_be_reused_list, output, n_stage):
-        a = []
-        n_sample = x.shape[0]
+        # a = []
+        # n_sample = x.shape[0]
         st = F.softmax(output, 1)
         max_preds, _ = st.max(dim=1, keepdim=False)
         # print(max_preds)
@@ -359,7 +359,6 @@ class DVT_T2t_vit_14_model(nn.Module):
         # x = torch.index_select(x, 0, indice)
 
         x = x[max_preds >= self.T[13][n_stage], :, :, :]
-        print(x.shape)
         features_to_be_reused_list[0] = features_to_be_reused_list[0][max_preds >= self.T[13][n_stage]] #torch.index_select(features_to_be_reused_list[0], 0, indice)
         # print(relations_to_be_reused_list.shape)
         relations_to_be_reused_list = relations_to_be_reused_list[max_preds >= self.T[13][n_stage], :, :, :] # torch.index_select(relations_to_be_reused_list, 0, indice)
@@ -431,8 +430,8 @@ class DVT_T2t_vit_12_model(nn.Module):
                                        **kwargs)
 
     def resize_batch(self, x, features_to_be_reused_list, relations_to_be_reused_list, output, n_stage):
-        a = []
-        n_sample = x.shape[0]
+        # a = []
+        # n_sample = x.shape[0]
         st = F.softmax(output, 1)
         max_preds, _ = st.max(dim=1, keepdim=False)
         # print(max_preds)
@@ -443,7 +442,7 @@ class DVT_T2t_vit_12_model(nn.Module):
         # x = torch.index_select(x, 0, indice)
 
         x = x[max_preds >= self.T[13][n_stage], :, :, :]
-        print(x.shape)
+        # print(x.shape)
         features_to_be_reused_list[0] = features_to_be_reused_list[0][max_preds >= self.T[13][n_stage]] #torch.index_select(features_to_be_reused_list[0], 0, indice)
         # print(relations_to_be_reused_list.shape)
         relations_to_be_reused_list = relations_to_be_reused_list[max_preds >= self.T[13][n_stage], :, :, :] # torch.index_select(relations_to_be_reused_list, 0, indice)
