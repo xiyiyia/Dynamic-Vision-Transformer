@@ -329,10 +329,11 @@ class T2T_ViT(nn.Module):
 
 
 class DVT_T2t_vit_14_model(nn.Module):
-    def __init__(self, feature_reuse, relation_reuse, **kwargs):
+    def __init__(self, feature_reuse, relation_reuse, dynamic_threshold=None, **kwargs):
         super().__init__()
         self.feature_reuse = feature_reuse
         self.relation_reuse = relation_reuse
+        self.T = dynamic_threshold
         self.less_less_token = T2t_vit_14_less_less_token(feature_reuse=False,
                                                           relation_reuse=False,
                                                           **kwargs)
@@ -345,13 +346,51 @@ class DVT_T2t_vit_14_model(nn.Module):
                                        relation_reuse=relation_reuse,
                                        **kwargs)
 
+    def resize_batch(self, x, features_to_be_reused_list, relations_to_be_reused_list, output, n_stage):
+        a = []
+        n_sample = x.shape[0]
+        st = F.softmax(output, 1)
+        max_preds, _ = st.max(dim=1, keepdim=False)
+        # print(max_preds)
+        for i in range(n_sample):
+            if max_preds[i] >= self.T[11][n_stage]:
+                a.append(i)
+        indice = torch.tensor(np.array(a)).cuda()
+        x = torch.index_select(x, 0, indice)
+        features_to_be_reused_list[0] = torch.index_select(features_to_be_reused_list[0], 0, indice)
+        # print(relations_to_be_reused_list.shape)
+        relations_to_be_reused_list = torch.index_select(relations_to_be_reused_list, 0, indice)
+        return x, features_to_be_reused_list, relations_to_be_reused_list
+
+
     def forward(self, x):
 
         if self.feature_reuse == True and self.relation_reuse == True:
+            tl = []
+            st = time.perf_counter()
             less_less_token_output, features_to_be_reused_list, relations_to_be_reused_list = self.less_less_token(x, features_to_be_reused_list=None, relations_to_be_reused_list=None)
+            st_1 = time.perf_counter()
+            tl.append(st_1 - st)
+            x, features_to_be_reused_list, relations_to_be_reused_list = self.resize_batch(x, features_to_be_reused_list, relations_to_be_reused_list, less_less_token_output, 0)
+            print('state 0:', x.shape[0])
+            if x.shape[0] == 0:
+                return less_less_token_output, [], [], tl
+            # print(type(features_to_be_reused_list[0]))
+            # features_to_be_reused_list = torch.stack(features_to_be_reused_list).cuda()
+            # relations_to_be_reused_list = torch.stack(relations_to_be_reused_list_to_be_reused_list).cuda()
+            # print(features_to_be_reused_list.shape, relations_to_be_reused_list.shape)
             less_token_output, features_to_be_reused_list, relations_to_be_reused_list = self.less_token(x, features_to_be_reused_list=features_to_be_reused_list, relations_to_be_reused_list=relations_to_be_reused_list)
-            normal_output, _, _ = self.normal_token(x, features_to_be_reused_list=features_to_be_reused_list, relations_to_be_reused_list=relations_to_be_reused_list)
+            st_2 = time.perf_counter()
+            tl.append(st_2 - st)
 
+            x, features_to_be_reused_list, relations_to_be_reused_list = self.resize_batch(x, features_to_be_reused_list, relations_to_be_reused_list, less_less_token_output, 1)
+            if x.shape[0] == 0:
+                return less_less_token_output, less_token_output, [], tl
+            print('state 1:', x.shape[0])
+
+            normal_output, _, _ = self.normal_token(x, features_to_be_reused_list=features_to_be_reused_list, relations_to_be_reused_list=relations_to_be_reused_list)
+            st_3 = time.perf_counter()
+            tl.append(st_3 - st)
         elif self.feature_reuse == False and self.relation_reuse == True:
             less_less_token_output, features_to_be_reused_list, relations_to_be_reused_list = self.less_less_token(x, features_to_be_reused_list=None, relations_to_be_reused_list=None)
             less_token_output, features_to_be_reused_list, relations_to_be_reused_list = self.less_token(x, features_to_be_reused_list=None, relations_to_be_reused_list=relations_to_be_reused_list)
@@ -367,7 +406,7 @@ class DVT_T2t_vit_14_model(nn.Module):
             less_token_output, features_to_be_reused_list, relations_to_be_reused_list = self.less_token(x, features_to_be_reused_list=None, relations_to_be_reused_list=None)
             normal_output, _, _ = self.normal_token(x, features_to_be_reused_list=None, relations_to_be_reused_list=None)
 
-        return less_less_token_output, less_token_output, normal_output
+        return less_less_token_output, less_token_output, normal_output, tl
 
 
 class DVT_T2t_vit_12_model(nn.Module):
@@ -453,8 +492,8 @@ class DVT_T2t_vit_12_model(nn.Module):
 
 
 @register_model
-def DVT_T2t_vit_14(**kwargs):
-    return DVT_T2t_vit_14_model(feature_reuse=True, relation_reuse=True, **kwargs)
+def DVT_T2t_vit_14(dynamic_threshold=None,**kwargs):
+    return DVT_T2t_vit_14_model(feature_reuse=True, relation_reuse=True, dynamic_threshold=dynamic_threshold, **kwargs)
 
 @register_model
 def DVT_T2t_vit_12(dynamic_threshold=None, **kwargs):

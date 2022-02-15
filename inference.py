@@ -27,7 +27,7 @@ parser.add_argument('--data_url', default='./data/', type=str,
 parser.add_argument('--batch_size', default=128, type=int,
                     help='mini-batch size (default: 64)')
 
-parser.add_argument('--model', default='DVT_T2t_vit_12', type=str,
+parser.add_argument('--model', default='DVT_T2t_vit_14', type=str,
                     help='model name')
 
 parser.add_argument('--checkpoint_path', default='checkpoint/DVT_T2t_vit_12.pth.tar', type=str,
