@@ -26,6 +26,9 @@ from .vovnet import *
 from .xception import *
 from .xception_aligned import *
 from .t2t_vit import *
+from .t2t_vit_se import *
+from .t2t_vit_dense import *
+from .t2t_vit_ghost import *
 
 from .factory import create_model
 from .helpers import load_checkpoint, resume_checkpoint
