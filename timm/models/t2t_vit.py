@@ -373,7 +373,7 @@ class DVT_T2t_vit_14_model(nn.Module):
             st_1 = time.perf_counter()
             tl.append(st_1 - st)
             x, features_to_be_reused_list, relations_to_be_reused_list = self.resize_batch(x, features_to_be_reused_list, relations_to_be_reused_list, less_less_token_output, 0)
-            print('state 0:', x.shape[0])
+            # print('state 0:', x.shape[0])
             if x.shape[0] == 0:
                 return less_less_token_output, [], [], tl
             # print(type(features_to_be_reused_list[0]))
@@ -387,7 +387,7 @@ class DVT_T2t_vit_14_model(nn.Module):
             x, features_to_be_reused_list, relations_to_be_reused_list = self.resize_batch(x, features_to_be_reused_list, relations_to_be_reused_list, less_token_output, 1)
             if x.shape[0] == 0:
                 return less_less_token_output, less_token_output, [], tl
-            print('state 1:', x.shape[0])
+            # print('state 1:', x.shape[0])
 
             normal_output, _, _ = self.normal_token(x, features_to_be_reused_list=features_to_be_reused_list, relations_to_be_reused_list=relations_to_be_reused_list)
             st_3 = time.perf_counter()
