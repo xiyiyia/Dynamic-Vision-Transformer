@@ -30,7 +30,7 @@ parser.add_argument('--batch_size', default=128, type=int,
 parser.add_argument('--model', default='DVT_T2t_vit_14', type=str,
                     help='model name')
 
-parser.add_argument('--checkpoint_path', default='checkpoint/DVT_T2t_vit_12.pth.tar', type=str,
+parser.add_argument('--checkpoint_path', default='checkpoint/DVT_T2t_vit_14.pth.tar', type=str,
                     help='path to the pre-train model (default: none)')
 
 parser.add_argument('--eval_mode', default=1, type=int,
