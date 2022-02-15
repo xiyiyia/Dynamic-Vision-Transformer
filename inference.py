@@ -95,7 +95,7 @@ def main():
         imagenet_valid = datasets.ImageFolder(valdir, transforms.Compose([transforms.Resize(256, interpolation=3),transforms.CenterCrop(224),transforms.ToTensor(),normalize]))
         randomsampler = RandomSampler(imagenet_valid)
         val_loader = torch.utils.data.DataLoader(imagenet_valid,
-            batch_size=args.batch_size, shuffle=False, num_workers=1, pin_memory=False)#, sampler=randomsampler)
+            batch_size=args.batch_size, shuffle=False, num_workers=1, pin_memory=False, sampler=randomsampler)
         # print(val_loader)
         model = model.cuda()
         # print(dynamic_threshold)
