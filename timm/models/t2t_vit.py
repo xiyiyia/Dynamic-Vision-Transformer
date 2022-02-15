@@ -261,8 +261,8 @@ class T2T_ViT(nn.Module):
         if relations_to_be_reused_list is not None:
 
             new_hw = x.size(1) - 1
-            relations_to_be_reused = torch.cat(relations_to_be_reused_list,1)
-            relations_to_be_reused = self.relation_reuse_conv(relations_to_be_reused)
+            # relations_to_be_reused = torch.cat(relations_to_be_reused_list,1)
+            relations_to_be_reused = self.relation_reuse_conv(relations_to_be_reused_list)
 
             relation_temp = relations_to_be_reused[:, :, :, 1:]
             B, h, n, hw  = relation_temp.shape
@@ -323,6 +323,7 @@ class T2T_ViT(nn.Module):
     def forward(self, x, features_to_be_reused_list=None, relations_to_be_reused_list=None):
         x, feature_list, relation_list = self.forward_features(x, features_to_be_reused_list, relations_to_be_reused_list)
         x = self.head(x)
+        relation_list = torch.cat(relation_list, 1)
         return x, feature_list, relation_list
 
 
@@ -389,7 +390,6 @@ class DVT_T2t_vit_12_model(nn.Module):
                                        **kwargs)
 
     def resize_batch(self, x, features_to_be_reused_list, relations_to_be_reused_list, output, n_stage):
-        # print(len(features_to_be_reused_list), len(features_to_be_reused_list[0]), type(relations_to_be_reused_list[0]))
         a = []
         n_sample = x.shape[0]
         st = F.softmax(output, 1)
@@ -401,10 +401,9 @@ class DVT_T2t_vit_12_model(nn.Module):
         indice = torch.tensor(np.array(a)).cuda()
         x = torch.index_select(x, 0, indice)
         features_to_be_reused_list[0] = torch.index_select(features_to_be_reused_list[0], 0, indice)
-        for i in range(len(relations_to_be_reused_list)):
-            relations_to_be_reused_list[i] = torch.index_select(relations_to_be_reused_list[i], 0, indice)
+        # print(relations_to_be_reused_list.shape)
+        relations_to_be_reused_list = torch.index_select(relations_to_be_reused_list, 0, indice)
         return x, features_to_be_reused_list, relations_to_be_reused_list
-
 
     def forward(self, x):
 
@@ -418,7 +417,10 @@ class DVT_T2t_vit_12_model(nn.Module):
             print('state 0:', x.shape[0])
             if x.shape[0] == 0:
                 return less_less_token_output, [], [], tl
-
+            # print(type(features_to_be_reused_list[0]))
+            # features_to_be_reused_list = torch.stack(features_to_be_reused_list).cuda()
+            # relations_to_be_reused_list = torch.stack(relations_to_be_reused_list_to_be_reused_list).cuda()
+            # print(features_to_be_reused_list.shape, relations_to_be_reused_list.shape)
             less_token_output, features_to_be_reused_list, relations_to_be_reused_list = self.less_token(x, features_to_be_reused_list=features_to_be_reused_list, relations_to_be_reused_list=relations_to_be_reused_list)
             st_2 = time.perf_counter()
             tl.append(st_2 - st)
