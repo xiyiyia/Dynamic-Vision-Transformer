@@ -358,7 +358,7 @@ class DVT_T2t_vit_14_model(nn.Module):
         # indice = torch.tensor(np.array(a)).cuda()
         # x = torch.index_select(x, 0, indice)
 
-        x = x[max_preds >= self.T[13][n_stage], :, :, :]
+        x = x[max_preds >= self.T[7][n_stage], :, :, :]
         features_to_be_reused_list[0] = features_to_be_reused_list[0][max_preds >= self.T[13][n_stage]] #torch.index_select(features_to_be_reused_list[0], 0, indice)
         # print(relations_to_be_reused_list.shape)
         relations_to_be_reused_list = relations_to_be_reused_list[max_preds >= self.T[13][n_stage], :, :, :] # torch.index_select(relations_to_be_reused_list, 0, indice)
