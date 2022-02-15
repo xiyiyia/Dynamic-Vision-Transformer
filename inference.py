@@ -24,7 +24,7 @@ parser = argparse.ArgumentParser(description='Inference code for DVT')
 parser.add_argument('--data_url', default='./data/', type=str,
                     help='path to the dataset (ImageNet)')
 
-parser.add_argument('--batch_size', default=32, type=int,
+parser.add_argument('--batch_size', default=128, type=int,
                     help='mini-batch size (default: 64)')
 
 parser.add_argument('--model', default='DVT_T2t_vit_12', type=str,
