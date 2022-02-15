@@ -33,7 +33,7 @@ parser.add_argument('--model', default='DVT_T2t_vit_14', type=str,
 parser.add_argument('--checkpoint_path', default='checkpoint/DVT_T2t_vit_14.pth.tar', type=str,
                     help='path to the pre-train model (default: none)')
 
-parser.add_argument('--eval_mode', default=0, type=int,
+parser.add_argument('--eval_mode', default=1, type=int,
                     help='mode 0 : read the evaluation results saved in pre-trained models\
                           mode 1 : read the confidence thresholds saved in pre-trained models and infer the model on the validation set\
                           mode 2 : determine confidence thresholds on the training set and infer the model on the validation set')
