@@ -25,6 +25,7 @@ from .vision_transformer import *
 from .vovnet import *
 from .xception import *
 from .xception_aligned import *
+from .t2t_vit import *
 
 from .factory import create_model
 from .helpers import load_checkpoint, resume_checkpoint
