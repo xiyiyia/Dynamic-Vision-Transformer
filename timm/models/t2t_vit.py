@@ -352,16 +352,18 @@ class DVT_T2t_vit_14_model(nn.Module):
         st = F.softmax(output, 1)
         max_preds, _ = st.max(dim=1, keepdim=False)
         # print(max_preds)
-        for i in range(n_sample):
-            if max_preds[i] >= self.T[11][n_stage]:
-                a.append(i)
-        indice = torch.tensor(np.array(a)).cuda()
-        x = torch.index_select(x, 0, indice)
-        features_to_be_reused_list[0] = torch.index_select(features_to_be_reused_list[0], 0, indice)
-        # print(relations_to_be_reused_list.shape)
-        relations_to_be_reused_list = torch.index_select(relations_to_be_reused_list, 0, indice)
-        return x, features_to_be_reused_list, relations_to_be_reused_list
+        # for i in range(n_sample):
+        #     if max_preds[i] >= self.T[11][n_stage]:
+        #         a.append(i)
+        # indice = torch.tensor(np.array(a)).cuda()
+        # x = torch.index_select(x, 0, indice)
 
+        x = x[max_preds >= self.T[13][n_stage], :, :, :]
+        print(x.shape)
+        features_to_be_reused_list[0] = features_to_be_reused_list[0][max_preds >= self.T[13][n_stage]] #torch.index_select(features_to_be_reused_list[0], 0, indice)
+        # print(relations_to_be_reused_list.shape)
+        relations_to_be_reused_list = relations_to_be_reused_list[max_preds >= self.T[13][n_stage], :, :, :] # torch.index_select(relations_to_be_reused_list, 0, indice)
+        return x, features_to_be_reused_list, relations_to_be_reused_list
 
     def forward(self, x):
 
@@ -383,7 +385,7 @@ class DVT_T2t_vit_14_model(nn.Module):
             st_2 = time.perf_counter()
             tl.append(st_2 - st)
 
-            x, features_to_be_reused_list, relations_to_be_reused_list = self.resize_batch(x, features_to_be_reused_list, relations_to_be_reused_list, less_less_token_output, 1)
+            x, features_to_be_reused_list, relations_to_be_reused_list = self.resize_batch(x, features_to_be_reused_list, relations_to_be_reused_list, less_token_output, 1)
             if x.shape[0] == 0:
                 return less_less_token_output, less_token_output, [], tl
             print('state 1:', x.shape[0])
@@ -434,14 +436,17 @@ class DVT_T2t_vit_12_model(nn.Module):
         st = F.softmax(output, 1)
         max_preds, _ = st.max(dim=1, keepdim=False)
         # print(max_preds)
-        for i in range(n_sample):
-            if max_preds[i] >= self.T[11][n_stage]:
-                a.append(i)
-        indice = torch.tensor(np.array(a)).cuda()
-        x = torch.index_select(x, 0, indice)
-        features_to_be_reused_list[0] = torch.index_select(features_to_be_reused_list[0], 0, indice)
+        # for i in range(n_sample):
+        #     if max_preds[i] >= self.T[11][n_stage]:
+        #         a.append(i)
+        # indice = torch.tensor(np.array(a)).cuda()
+        # x = torch.index_select(x, 0, indice)
+
+        x = x[max_preds >= self.T[13][n_stage], :, :, :]
+        print(x.shape)
+        features_to_be_reused_list[0] = features_to_be_reused_list[0][max_preds >= self.T[13][n_stage]] #torch.index_select(features_to_be_reused_list[0], 0, indice)
         # print(relations_to_be_reused_list.shape)
-        relations_to_be_reused_list = torch.index_select(relations_to_be_reused_list, 0, indice)
+        relations_to_be_reused_list = relations_to_be_reused_list[max_preds >= self.T[13][n_stage], :, :, :] # torch.index_select(relations_to_be_reused_list, 0, indice)
         return x, features_to_be_reused_list, relations_to_be_reused_list
 
     def forward(self, x):
@@ -464,7 +469,7 @@ class DVT_T2t_vit_12_model(nn.Module):
             st_2 = time.perf_counter()
             tl.append(st_2 - st)
 
-            x, features_to_be_reused_list, relations_to_be_reused_list = self.resize_batch(x, features_to_be_reused_list, relations_to_be_reused_list, less_less_token_output, 1)
+            x, features_to_be_reused_list, relations_to_be_reused_list = self.resize_batch(x, features_to_be_reused_list, relations_to_be_reused_list, less_token_output, 1)
             if x.shape[0] == 0:
                 return less_less_token_output, less_token_output, [], tl
             print('state 1:', x.shape[0])
@@ -492,7 +497,7 @@ class DVT_T2t_vit_12_model(nn.Module):
 
 
 @register_model
-def DVT_T2t_vit_14(dynamic_threshold=None,**kwargs):
+def DVT_T2t_vit_14(dynamic_threshold=None, **kwargs):
     return DVT_T2t_vit_14_model(feature_reuse=True, relation_reuse=True, dynamic_threshold=dynamic_threshold, **kwargs)
 
 @register_model
