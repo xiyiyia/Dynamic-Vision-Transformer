@@ -729,7 +729,9 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
                 input = input.contiguous(memory_format=torch.channels_last)
 
             with amp_autocast():
-                less_less_token_output, less_token_output, output = model(input)
+                # less_less_token_output, less_token_output, output = model(input)
+                '''single model'''
+                output, _, _ = model(input)
             if isinstance(output, (tuple, list)):
                 output = output[0]
 
