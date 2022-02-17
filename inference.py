@@ -41,6 +41,22 @@ parser.add_argument('--eval_mode', default=1, type=int,
 args = parser.parse_args()
 
 
+class ImageFolderWithPaths(datasets.ImageFolder):
+    """Custom dataset that includes image file paths. Extends
+    torchvision.datasets.ImageFolder
+    """
+
+    # override the __getitem__ method. this is the method that dataloader calls
+    def __getitem__(self, index):
+        # this is what ImageFolder normally returns
+        original_tuple = super(ImageFolderWithPaths, self).__getitem__(index)
+        # the image file path
+        path = self.imgs[index][0]
+        # make a new tuple that includes original and the path
+        tuple_with_path = (original_tuple + (path,))
+        return tuple_with_path
+
+
 def main():
 
     # load pretrained model
@@ -91,8 +107,9 @@ def main():
         train_set_index = torch.randperm(len(train_set))
         train_loader = torch.utils.data.DataLoader(train_set, batch_size=args.batch_size, num_workers=1, pin_memory=False,
                 sampler=torch.utils.data.sampler.SubsetRandomSampler(train_set_index[-50000:]))
-
-        imagenet_valid = datasets.ImageFolder(valdir, transforms.Compose([transforms.Resize(256, interpolation=3),transforms.CenterCrop(224),transforms.ToTensor(),normalize]))
+        imagenet_valid = ImageFolderWithPaths(valdir, transforms.Compose(
+            [transforms.Resize(256, interpolation=3), transforms.CenterCrop(224), transforms.ToTensor(), normalize]))
+        # imagenet_valid = datasets.ImageFolder(valdir, transforms.Compose([transforms.Resize(256, interpolation=3),transforms.CenterCrop(224),transforms.ToTensor(),normalize]))
         randomsampler = RandomSampler(imagenet_valid)
         val_loader = torch.utils.data.DataLoader(imagenet_valid,
             batch_size=args.batch_size, shuffle=False, num_workers=1, pin_memory=False, sampler=randomsampler)
@@ -153,9 +170,9 @@ def generate_logits(model, dataloader, T):
     top1 = [AverageMeter() for _ in range(3)]
     model.eval()
     ttl = []
-    for i, (x, target) in enumerate(dataloader):
-        a, b = dataloader.dataset.samples[i]
-        print(a, b, len(dataloader.dataset.samples))
+    for i, (x, target, path) in enumerate(dataloader):
+        # a, b = dataloader.dataset.samples[i]
+        # print(a, b, len(dataloader.dataset.samples))
         print(i)
         # logits_temp = torch.zeros(3, x.size(0), 1000)
 
@@ -165,6 +182,14 @@ def generate_logits(model, dataloader, T):
         with torch.no_grad():
 
             less_less_token_output, less_token_output, normal_output, tl = model(input_var)
+
+            if normal_output == [] and less_token_output == []:
+                os.system('cp ' + path[0] + ' ./data/train/1/')
+            elif normal_output == [] and less_token_output != []:
+                os.system('cp ' + path[0] + ' ./data/train/2/')
+            else:
+                os.system('cp ' + path[0] + ' ./data/train/3/')
+
             if i != 0:
                 ttl.append(tl)
 
