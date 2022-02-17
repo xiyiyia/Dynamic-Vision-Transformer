@@ -743,15 +743,18 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
 
             loss = loss_fn(output, target)
             acc1, acc5 = accuracy(output, target, topk=(1, 5))
-            acc_less_less_token = accuracy(less_less_token_output, target, topk=(1,))[0]
-            acc_less_token = accuracy(less_token_output, target, topk=(1,))[0]
+
+            '''single model'''
+            # acc_less_less_token = accuracy(less_less_token_output, target, topk=(1,))[0]
+            # acc_less_token = accuracy(less_token_output, target, topk=(1,))[0]
 
             if args.distributed:
                 reduced_loss = reduce_tensor(loss.data, args.world_size)
                 acc1 = reduce_tensor(acc1, args.world_size)
                 acc5 = reduce_tensor(acc5, args.world_size)
-                acc_less_less_token = reduce_tensor(acc_less_less_token, args.world_size)
-                acc_less_token = reduce_tensor(acc_less_token, args.world_size)
+                '''single model'''
+                # acc_less_less_token = reduce_tensor(acc_less_less_token, args.world_size)
+                # acc_less_token = reduce_tensor(acc_less_token, args.world_size)
             else:
                 reduced_loss = loss.data
 
@@ -760,8 +763,9 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
             losses_m.update(reduced_loss.item(), input.size(0))
             top1_m.update(acc1.item(), output.size(0))
             top5_m.update(acc5.item(), output.size(0))
-            acc_less_less_token_m.update(acc_less_less_token.item(), output.size(0))
-            acc_less_token_m.update(acc_less_token.item(), output.size(0))
+            '''single model'''
+            # acc_less_less_token_m.update(acc_less_less_token.item(), output.size(0))
+            # acc_less_token_m.update(acc_less_token.item(), output.size(0))
 
             batch_time_m.update(time.time() - end)
             end = time.time()
