@@ -631,8 +631,13 @@ def train_epoch(
             input = input.contiguous(memory_format=torch.channels_last)
 
         with amp_autocast():
-            less_less_token_output, less_token_output, output = model(input)
-            loss = loss_fn(less_less_token_output, target) + loss_fn(less_token_output, target) + loss_fn(output, target)
+            # less_less_token_output, less_token_output, output = model(input)
+            '''
+            single model
+            '''
+            less_less_token_output, _, _ = model(input)
+            # loss = loss_fn(less_less_token_output, target) + loss_fn(less_token_output, target) + loss_fn(output, target)
+            loss = loss_fn(less_less_token_output, target)
 
         if not args.distributed:
             losses_m.update(loss.item(), input.size(0))
