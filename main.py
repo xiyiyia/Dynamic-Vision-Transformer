@@ -745,7 +745,7 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
                 target = target[0:target.size(0):reduce_factor]
 
             loss = loss_fn(output, target)
-            acc1, acc5 = accuracy(output, target, topk=(1, 5))
+            acc1, acc5 = accuracy(output, target, topk=(1, 3))
 
             '''single model'''
             # acc_less_less_token = accuracy(less_less_token_output, target, topk=(1,))[0]
