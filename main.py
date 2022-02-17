@@ -642,7 +642,7 @@ def train_epoch(
             less_less_token_output, _, _ = model(input)
             # loss = loss_fn(less_less_token_output, target) + loss_fn(less_token_output, target) + loss_fn(output, target)
             a = F.softmax(less_less_token_output, 1).max(dim=1, keepdim=False)
-            print(a, target)
+            print(a)#, target)
             loss = loss_fn(less_less_token_output, target)
 
         if not args.distributed:
