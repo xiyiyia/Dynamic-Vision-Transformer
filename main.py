@@ -49,7 +49,7 @@ parser = argparse.ArgumentParser(description='T2T-ViT Training and Evaluating')
 # Dataset / Model parameters
 parser.add_argument('data', metavar='DIR',
                    help='path to dataset')
-parser.add_argument('--model', default='T2t_vit_14', type=str, metavar='MODEL',
+parser.add_argument('--model', default='T2t_vit_7', type=str, metavar='MODEL',
                     help='Name of model to train (default: "countception"')
 parser.add_argument('--pretrained', action='store_true', default=False,
                     help='Start with pretrained version of specified network (if avail)')
