@@ -492,7 +492,7 @@ def main():
         use_multi_epochs_loader=args.use_multi_epochs_loader
     )
 
-    eval_dir = os.path.join(args.data, 'val')
+    eval_dir = os.path.join(args.data, 'train')
     if not os.path.isdir(eval_dir):
         eval_dir = os.path.join(args.data, 'validation')
         if not os.path.isdir(eval_dir):
@@ -569,32 +569,32 @@ def main():
                     _logger.info("Distributing BatchNorm running means and vars")
                 distribute_bn(model, args.world_size, args.dist_bn == 'reduce')
 
-            # eval_metrics = validate(model, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
-            #
-            # if model_ema is not None and not args.model_ema_force_cpu:
-            #     if args.distributed and args.dist_bn in ('broadcast', 'reduce'):
-            #         distribute_bn(model_ema, args.world_size, args.dist_bn == 'reduce')
-            #     ema_eval_metrics = validate(
-            #         model_ema.ema, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast, log_suffix=' (EMA)')
-            #     eval_metrics = ema_eval_metrics
+            eval_metrics = validate(model, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
 
-            # if lr_scheduler is not None:
-            #     # step LR for next epoch
-            #     lr_scheduler.step(epoch + 1, eval_metrics[eval_metric])
+            if model_ema is not None and not args.model_ema_force_cpu:
+                if args.distributed and args.dist_bn in ('broadcast', 'reduce'):
+                    distribute_bn(model_ema, args.world_size, args.dist_bn == 'reduce')
+                ema_eval_metrics = validate(
+                    model_ema.ema, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast, log_suffix=' (EMA)')
+                eval_metrics = ema_eval_metrics
 
-            # if args.local_rank == 0:
-            #     update_summary(
-            #         epoch, train_metrics, eval_metrics, os.path.join(output_dir, 'summary.csv'),
-            #         write_header=best_metric is None)
+            if lr_scheduler is not None:
+                # step LR for next epoch
+                lr_scheduler.step(epoch + 1, eval_metrics[eval_metric])
+
+            if args.local_rank == 0:
+                update_summary(
+                    epoch, train_metrics, eval_metrics, os.path.join(output_dir, 'summary.csv'),
+                    write_header=best_metric is None)
 
             if saver is not None:
                 # save proper checkpoint with eval metric
-                # save_metric = eval_metrics[eval_metric]
-                # best_metric, best_epoch = saver.save_checkpoint(epoch, metric=save_metric)
+                save_metric = eval_metrics[eval_metric]
+                best_metric, best_epoch = saver.save_checkpoint(epoch, metric=save_metric)
                 '''single model'''
                 # save_metric = eval_metrics[eval_metric]
                 # best_metric, best_epoch = saver.save_checkpoint(epoch)
-                saver.save_checkpoint(epoch)
+                # saver.save_checkpoint(epoch)
     except KeyboardInterrupt:
         pass
     if best_metric is not None:
