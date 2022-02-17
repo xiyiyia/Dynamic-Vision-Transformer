@@ -593,7 +593,8 @@ def main():
                 # best_metric, best_epoch = saver.save_checkpoint(epoch, metric=save_metric)
                 '''single model'''
                 # save_metric = eval_metrics[eval_metric]
-                best_metric, best_epoch = saver.save_checkpoint(epoch)
+                # best_metric, best_epoch = saver.save_checkpoint(epoch)
+                saver.save_checkpoint(epoch)
     except KeyboardInterrupt:
         pass
     if best_metric is not None:
