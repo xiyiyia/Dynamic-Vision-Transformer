@@ -21,6 +21,7 @@ import models
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torchvision.utils
 from torch.nn.parallel import DistributedDataParallel as NativeDDP
 
@@ -640,6 +641,8 @@ def train_epoch(
             '''
             less_less_token_output, _, _ = model(input)
             # loss = loss_fn(less_less_token_output, target) + loss_fn(less_token_output, target) + loss_fn(output, target)
+            logits = F.softmax(less_less_token_output, 1)
+            print(logits)
             loss = loss_fn(less_less_token_output, target)
 
         if not args.distributed:
