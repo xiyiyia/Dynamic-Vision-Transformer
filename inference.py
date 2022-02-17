@@ -154,7 +154,8 @@ def generate_logits(model, dataloader, T):
     model.eval()
     ttl = []
     for i, (x, target) in enumerate(dataloader):
-
+        a, b = dataloader.dataset.samples[i]
+        print(a, b)
         print(i)
         # logits_temp = torch.zeros(3, x.size(0), 1000)
 
