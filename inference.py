@@ -184,11 +184,11 @@ def generate_logits(model, dataloader, T):
             less_less_token_output, less_token_output, normal_output, tl = model(input_var)
 
             if normal_output == [] and less_token_output == []:
-                os.system('mv ' + path[0] + ' ./data/test/1/')
+                os.system('mv ' + path[0] + ' ./data/train/1/')
             elif normal_output == [] and less_token_output != []:
-                os.system('mv ' + path[0] + ' ./data/test/2/')
+                os.system('mv ' + path[0] + ' ./data/train/2/')
             else:
-                os.system('mv ' + path[0] + ' ./data/test/3/')
+                os.system('mv ' + path[0] + ' ./data/train/3/')
 
             if i != 0:
                 ttl.append(tl)
