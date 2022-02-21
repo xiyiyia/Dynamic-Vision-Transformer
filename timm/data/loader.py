@@ -153,7 +153,8 @@ def create_loader(
         pin_memory=False,
         fp16=False,
         tf_preprocessing=False,
-        use_multi_epochs_loader=False
+        use_multi_epochs_loader=False,
+        sampler=None
 ):
     re_num_splits = 0
     if re_split:
@@ -182,7 +183,7 @@ def create_loader(
         separate=num_aug_splits > 0,
     )
 
-    sampler = None
+    # sampler = None
     if distributed:
         if is_training:
             sampler = torch.utils.data.distributed.DistributedSampler(dataset)

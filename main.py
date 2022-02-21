@@ -18,7 +18,7 @@ from collections import OrderedDict
 from contextlib import suppress
 from datetime import datetime
 import models
-
+from torch.utils.data import RandomSampler
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -465,6 +465,9 @@ def main():
     train_interpolation = args.train_interpolation
     if args.no_aug or not train_interpolation:
         train_interpolation = data_config['interpolation']
+    # [transforms.Resize(256, interpolation=3), transforms.CenterCrop(224), transforms.ToTensor(), normalize]))
+    # imagenet_valid = datasets.ImageFolder(valdir, transforms.Compose([transforms.Resize(256, interpolation=3),transforms.CenterCrop(224),transforms.ToTensor(),normalize]))
+    randomsampler = RandomSampler(dataset_train)
     loader_train = create_loader(
         dataset_train,
         input_size=data_config['input_size'],
@@ -490,7 +493,8 @@ def main():
         distributed=args.distributed,
         collate_fn=collate_fn,
         pin_memory=args.pin_mem,
-        use_multi_epochs_loader=args.use_multi_epochs_loader
+        use_multi_epochs_loader=args.use_multi_epochs_loader,
+        sampler=randomsampler
     )
 
     eval_dir = os.path.join(args.data, 'train')
