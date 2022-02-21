@@ -759,7 +759,6 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
 
             loss = loss_fn(output, target)
             acc1, acc5 = accuracy(output, target, topk=(1, 3))
-            print(acc1,acc5)
             '''single model'''
             # acc_less_less_token = accuracy(less_less_token_output, target, topk=(1,))[0]
             # acc_less_token = accuracy(less_token_output, target, topk=(1,))[0]
@@ -777,6 +776,7 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
             torch.cuda.synchronize()
 
             losses_m.update(reduced_loss.item(), input.size(0))
+            print(acc1.item, output.size(0))
             top1_m.update(acc1.item(), output.size(0))
             top5_m.update(acc5.item(), output.size(0))
             '''single model'''
