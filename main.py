@@ -629,6 +629,7 @@ def train_epoch(
     last_idx = len(loader) - 1
     num_updates = epoch * len(loader)
     for batch_idx, (input, target) in enumerate(loader):
+        print(target)
         last_batch = batch_idx == last_idx
         data_time_m.update(time.time() - end)
         if not args.prefetcher:
@@ -646,8 +647,8 @@ def train_epoch(
             less_less_token_output, _, _ = model(input)
             # loss = loss_fn(less_less_token_output, target) + loss_fn(less_token_output, target) + loss_fn(output, target)
             a = F.softmax(less_less_token_output, 1).max(dim=1, keepdim=False)
-            print('a',a)
-            print('target',target)
+            # print('a',a)
+            # print('target',target)
             loss = loss_fn(less_less_token_output, target)
 
         if not args.distributed:
