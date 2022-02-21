@@ -542,7 +542,7 @@ def main():
         print(f"Top-1 accuracy of the model is: {val_metrics['top1']:.1f}%")
         return
 
-    saver = None
+    # saver = None
     output_dir = ''
     if args.local_rank == 0:
         output_base = args.output if args.output else './output'
