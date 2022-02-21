@@ -98,7 +98,7 @@ parser.add_argument('--clip-grad', type=float, default=None, metavar='NORM',
 # Learning rate schedule parameters
 parser.add_argument('--sched', default='cosine', type=str, metavar='SCHEDULER',
                     help='LR scheduler (default: "cosine"')
-parser.add_argument('--lr', type=float, default=5e-4, metavar='LR',
+parser.add_argument('--lr', type=float, default=0.01, metavar='LR',# 5e-4, metavar='LR',
                     help='learning rate (default: 0.01)')
 parser.add_argument('--lr-noise', type=float, nargs='+', default=None, metavar='pct, pct',
                     help='learning rate noise on/off epoch percentages')
