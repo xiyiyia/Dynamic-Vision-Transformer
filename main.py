@@ -600,7 +600,7 @@ def main():
                 # save_metric = eval_metrics[eval_metric]
                 # best_metric, best_epoch = saver.save_checkpoint(epoch)
                 # saver.save_checkpoint(epoch)
-            save_metric=None
+            save_metric=0
             best_metric, best_epoch = saver.save_checkpoint(epoch, metric=save_metric)
     except KeyboardInterrupt:
         pass
