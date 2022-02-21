@@ -497,7 +497,7 @@ def main():
         sampler=randomsampler
     )
 
-    eval_dir = os.path.join(args.data, 'train')
+    eval_dir = os.path.join(args.data, 'val')
     if not os.path.isdir(eval_dir):
         eval_dir = os.path.join(args.data, 'validation')
         if not os.path.isdir(eval_dir):
