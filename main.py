@@ -630,8 +630,8 @@ def train_epoch(
     num_updates = epoch * len(loader)
     for batch_idx, (input, target) in enumerate(loader):
         # print(target)
-        a = target.max(dim=1, keepdim=False)
-        print(a)
+        target = target.argmax(dim=1, keepdim=False)
+        print(target)
         last_batch = batch_idx == last_idx
         data_time_m.update(time.time() - end)
         if not args.prefetcher:
