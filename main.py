@@ -648,7 +648,7 @@ def train_epoch(
             '''
             output = model(input)
             print(output)
-            loss = loss_fn(output, target)
+            loss = loss_fn(output[0], target)
             # a = F.softmax(output, 1).max(dim=1, keepdim=False)
             # print('a',a)
             # print('target',target)
