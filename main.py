@@ -630,7 +630,7 @@ def train_epoch(
     num_updates = epoch * len(loader)
     for batch_idx, (input, target) in enumerate(loader):
         # print(target)
-        a = F.softmax(target, 1).max(dim=1, keepdim=False)
+        a = F.softmax(target, 1).max(dim=1, keepdim=False).indices()
         print(a)
         last_batch = batch_idx == last_idx
         data_time_m.update(time.time() - end)
