@@ -26,6 +26,7 @@ from .vovnet import *
 from .xception import *
 from .xception_aligned import *
 from .t2t_vit import *
+from .t2t_vit_7 import *
 from .t2t_vit_se import *
 from .t2t_vit_dense import *
 from .t2t_vit_ghost import *

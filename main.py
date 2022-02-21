@@ -574,34 +574,34 @@ def main():
                     _logger.info("Distributing BatchNorm running means and vars")
                 distribute_bn(model, args.world_size, args.dist_bn == 'reduce')
 
-            # eval_metrics = validate(model, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
+            eval_metrics = validate(model, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast)
 
             if model_ema is not None and not args.model_ema_force_cpu:
                 if args.distributed and args.dist_bn in ('broadcast', 'reduce'):
                     distribute_bn(model_ema, args.world_size, args.dist_bn == 'reduce')
-                # ema_eval_metrics = validate(
-                #     model_ema.ema, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast, log_suffix=' (EMA)')
-                # eval_metrics = ema_eval_metrics
+                ema_eval_metrics = validate(
+                    model_ema.ema, loader_eval, validate_loss_fn, args, amp_autocast=amp_autocast, log_suffix=' (EMA)')
+                eval_metrics = ema_eval_metrics
 
-            # if lr_scheduler is not None:
+            if lr_scheduler is not None:
                 # step LR for next epoch
-                # lr_scheduler.step(epoch + 1, eval_metrics[eval_metric])
+                lr_scheduler.step(epoch + 1, eval_metrics[eval_metric])
 
-            # if args.local_rank == 0:
-            #     update_summary(
-            #         epoch, train_metrics, eval_metrics, os.path.join(output_dir, 'summary.csv'),
-            #         write_header=best_metric is None)
+            if args.local_rank == 0:
+                update_summary(
+                    epoch, train_metrics, eval_metrics, os.path.join(output_dir, 'summary.csv'),
+                    write_header=best_metric is None)
 
-            # if saver is not None:
+            if saver is not None:
                 # save proper checkpoint with eval metric
-                # save_metric = eval_metrics[eval_metric]
-                # best_metric, best_epoch = saver.save_checkpoint(epoch, metric=save_metric)
+                save_metric = eval_metrics[eval_metric]
+                best_metric, best_epoch = saver.save_checkpoint(epoch, metric=save_metric)
                 '''single model'''
                 # save_metric = eval_metrics[eval_metric]
                 # best_metric, best_epoch = saver.save_checkpoint(epoch)
                 # saver.save_checkpoint(epoch)
-            save_metric=0
-            best_metric, best_epoch = saver.save_checkpoint(epoch, metric=save_metric)
+            # save_metric=0
+            # best_metric, best_epoch = saver.save_checkpoint(epoch, metric=save_metric)
     except KeyboardInterrupt:
         pass
     if best_metric is not None:
@@ -646,13 +646,12 @@ def train_epoch(
             '''
             single model
             '''
-            less_less_token_output, _, _ = model(input)
-            # loss = loss_fn(less_less_token_output, target) + loss_fn(less_token_output, target) + loss_fn(output, target)
-            # print(less_less_token_output)
-            a = F.softmax(less_less_token_output, 1).max(dim=1, keepdim=False)
+            output = model(input)
+            loss = loss_fn(output, target)
+            # a = F.softmax(output, 1).max(dim=1, keepdim=False)
             # print('a',a)
             # print('target',target)
-            loss = loss_fn(less_less_token_output, target)
+            # loss = loss_fn(output, target)
 
         if not args.distributed:
             losses_m.update(loss.item(), input.size(0))
@@ -746,8 +745,8 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
             with amp_autocast():
                 # less_less_token_output, less_token_output, output = model(input)
                 '''single model'''
-                output, _, _ = model(input)
-                a = F.softmax(output, 1).max(dim=1, keepdim=False)
+                output = model(input)
+                # a = F.softmax(output, 1).max(dim=1, keepdim=False)
                 # print(a, target)
             if isinstance(output, (tuple, list)):
                 output = output[0]
@@ -777,7 +776,7 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
             torch.cuda.synchronize()
 
             losses_m.update(reduced_loss.item(), input.size(0))
-            print(acc1.item(), output.size(0))
+            # print(acc1.item(), output.size(0))
             top1_m.update(acc1.item(), output.size(0))
             top5_m.update(acc5.item(), output.size(0))
             '''single model'''
@@ -792,16 +791,11 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
                     '{0}: [{1:>4d}/{2}]  '
                     'Time: {batch_time.val:.3f} ({batch_time.avg:.3f})  '
                     'Loss: {loss.val:>7.4f} ({loss.avg:>6.4f})  '
-                    'Exit1 Acc@1: {acc_less_less_token.val:>7.4f} ({acc_less_less_token.avg:>7.4f})  '
-                    'Exit2 Acc@1: {acc_less_token.val:>7.4f} ({acc_less_token.avg:>7.4f})  '
-                    'Exit3 Acc@1: {top1.val:>7.4f} ({top1.avg:>7.4f})  '
-                    'Exit3 Acc@5: {top5.val:>7.4f} ({top5.avg:>7.4f})  '.format(
+                    'Exit3 Acc@1: {top1.val:>7.4f} ({top1.avg:>7.4f})   '.format(
                         log_name, batch_idx, last_idx, batch_time=batch_time_m,
-                        loss=losses_m, top1=top1_m, top5=top5_m,
-                        acc_less_token=acc_less_token_m, acc_less_less_token=acc_less_less_token_m))
+                        loss=losses_m, top1=top1_m))
 
-    metrics = OrderedDict([('loss', losses_m.avg), ('exit1_top1', acc_less_less_token_m.avg), ('exit2_top1', acc_less_token_m.avg), 
-                            ('exit3_top1', top1_m.avg), ('exit3_top5', top5_m.avg)])
+    metrics = OrderedDict([('loss', losses_m.avg), ('exit3_top1', top1_m.avg)])
 
     return metrics
 
