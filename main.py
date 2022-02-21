@@ -744,7 +744,7 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
                 '''single model'''
                 output, _, _ = model(input)
                 a = F.softmax(output, 1).max(dim=1, keepdim=False)
-                print(a, target)
+                # print(a, target)
             if isinstance(output, (tuple, list)):
                 output = output[0]
 
