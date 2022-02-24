@@ -198,7 +198,7 @@ def generate_logits(mlp_model, model, dataloader, T):
         input_var = x.cuda()
 
         with torch.no_grad():
-
+            print(input_var)
             output = mlp_model(input_var)
             print(output)
             less_less_token_output, less_token_output, normal_output, tl = model(input_var)
