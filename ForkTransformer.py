@@ -107,7 +107,7 @@ def main():
             bn_tf=False,
             bn_momentum=None,
             bn_eps=None,
-            checkpoint_path='')
+            checkpoint_path='model_state_dict')
 
         traindir = args.data_url + 'train/'
         valdir = args.data_url + 'test/'
@@ -137,7 +137,7 @@ def main():
         mlp_model = mlp_model.cuda()
         # print(dynamic_threshold)
         model.load_state_dict(checkpoint['model_state_dict'])
-        mlp_model.load_state_dict(mlp_checkpoint['model_state_dict'])
+        # mlp_model.load_state_dict(mlp_checkpoint['model_state_dict'])
         budgeted_batch_flops_list = []
         budgeted_batch_acc_list = []
 
