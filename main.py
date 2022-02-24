@@ -647,9 +647,9 @@ def train_epoch(
             single model
             '''
             output = model(input)
-            print(F.softmax(output[0], 1))
+            output = F.softmax(output[0], 1)
             # tput[0], target)
-            loss = loss_fn(output[0], target)
+            loss = loss_fn(output, target)
             # a = F.softmax(output, 1).max(dim=1, keepdim=False)
             # print('a',a)
             # print('target',target)
@@ -752,7 +752,7 @@ def validate(model, loader, loss_fn, args, amp_autocast=suppress, log_suffix='')
                 # a = F.softmax(output, 1).max(dim=1, keepdim=False)
                 # print(output[0], target)
             if isinstance(output, (tuple, list)):
-                output = output[0]
+                output = F.softmax(output[0], 1)
 
             # augmentation reduction
             reduce_factor = args.tta
