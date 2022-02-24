@@ -80,6 +80,7 @@ def list_models(filter='', module='', pretrained=False, exclude_filters=''):
 def is_model(model_name):
     """ Check if a model name exists
     """
+    print(_model_entrypoints)
     return model_name in _model_entrypoints
 
 
