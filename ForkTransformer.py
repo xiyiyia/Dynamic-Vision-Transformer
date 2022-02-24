@@ -107,8 +107,7 @@ def main():
             bn_tf=False,
             bn_momentum=None,
             bn_eps=None,
-            checkpoint_path='',
-            dynamic_threshold=dynamic_threshold)
+            checkpoint_path='')
 
         traindir = args.data_url + 'train/'
         valdir = args.data_url + 'test/'
