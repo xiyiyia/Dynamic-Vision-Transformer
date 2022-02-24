@@ -198,9 +198,10 @@ def generate_logits(mlp_model, model, dataloader, T):
         input_var = x.cuda()
 
         with torch.no_grad():
-            print(input_var)
+            # print(input_var)
             output = mlp_model(input_var)
             print(output)
+            print(target)
             less_less_token_output, less_token_output, normal_output, tl = model(input_var)
 
             # if normal_output == [] and less_token_output == []:
@@ -330,6 +331,6 @@ def dynamic_evaluate(logits, targets, flops, T, ttl):
 
 
 if __name__ == '__main__':
-    wandb.init()
+    # wandb.init()
     # print(1)
     main()
