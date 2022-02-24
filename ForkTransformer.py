@@ -96,7 +96,7 @@ def main():
             dynamic_threshold=dynamic_threshold)
         print(args.model)
         mlp_model = create_model(
-            'T2t_vit_7',
+            't2t_vit_7',
             pretrained=False,
             num_classes=3,
             drop_rate=0.0,
