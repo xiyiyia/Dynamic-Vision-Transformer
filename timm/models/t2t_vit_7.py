@@ -168,7 +168,7 @@ class T2T_ViT(nn.Module):
 def t2t_vit_7(pretrained=False, **kwargs): # adopt performer for tokens to token
     if pretrained:
         kwargs.setdefault('qk_scale', 256 ** -0.5)
-    model = T2T_ViT(tokens_type='performer', embed_dim=256, depth=7, num_heads=4, mlp_ratio=2., **kwargs)
+    model = T2T_ViT(tokens_type='performer', embed_dim=32, depth=14, num_heads=4, mlp_ratio=2., **kwargs)
     model.default_cfg = default_cfgs['T2t_vit_7']
     if pretrained:
         load_pretrained(
