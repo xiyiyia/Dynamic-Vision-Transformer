@@ -90,6 +90,7 @@ class T2T_module(nn.Module):
         # final tokens
         x = self.project(x)
 
+        # print(x)
         return x
 
 class T2T_ViT(nn.Module):
