@@ -102,7 +102,6 @@ class Block(nn.Module):
     def forward(self, x, features_to_be_reused=None, relations_to_be_reused=None):
 
         identity = x
-        print(type(x))
         x, relation = self.attn(self.norm1(x), relations_to_be_reused)
 
         x = identity + self.drop_path(x)
@@ -128,6 +127,7 @@ class Block(nn.Module):
             x = torch.cat((x, feature_temp), dim=2)
 
         x = identity + self.drop_path(self.mlp(self.norm2(x)))
+        print(type(x))
         return x, relation
 
 
