@@ -62,7 +62,7 @@ class ImageFolderWithPaths(datasets.ImageFolder):
 def main():
     # load pretrained model
     checkpoint = torch.load(args.checkpoint_path)
-    mlp_checkpoint = torch.load('checkpoint/20220221-103412-T2t_vit_7-224.pth.tar')
+    mlp_checkpoint = torch.load('checkpoint/T2t_vit_7-224.pth.tar')
     # print(1)
     try:
         flops = checkpoint['flops']
