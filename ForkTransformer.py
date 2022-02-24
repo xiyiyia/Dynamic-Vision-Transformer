@@ -94,7 +94,6 @@ def main():
             bn_eps=None,
             checkpoint_path='',
             dynamic_threshold=dynamic_threshold)
-        print(args.model)
         mlp_model = create_model(
             't2t_vit_7',
             pretrained=False,
@@ -137,7 +136,7 @@ def main():
         mlp_model = mlp_model.cuda()
         # print(dynamic_threshold)
         model.load_state_dict(checkpoint['model_state_dict'])
-        print(mlp_checkpoint)
+        print(mlp_checkpoint.keys())
         # mlp_model.load_state_dict(mlp_checkpoint['model_state_dict'])
         budgeted_batch_flops_list = []
         budgeted_batch_acc_list = []
