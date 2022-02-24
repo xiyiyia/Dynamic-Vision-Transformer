@@ -94,7 +94,7 @@ def main():
             bn_eps=None,
             checkpoint_path='',
             dynamic_threshold=dynamic_threshold)
-
+        print(args.model)
         mlp_model = create_model(
             'T2t_vit_7',
             pretrained=False,
