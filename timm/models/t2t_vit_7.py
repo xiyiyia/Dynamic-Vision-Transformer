@@ -154,7 +154,7 @@ class T2T_ViT(nn.Module):
 
         for blk in self.blocks:
             print(type(x))
-            x = blk(x)
+            x, _ = blk(x)
 
         x = self.norm(x)
         return x[:, 0]
