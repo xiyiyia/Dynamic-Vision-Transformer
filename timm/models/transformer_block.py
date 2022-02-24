@@ -102,7 +102,7 @@ class Block(nn.Module):
     def forward(self, x, features_to_be_reused=None, relations_to_be_reused=None):
 
         identity = x
-        print(x,type(x))
+        print(type(x))
         x, relation = self.attn(self.norm1(x), relations_to_be_reused)
 
         x = identity + self.drop_path(x)
