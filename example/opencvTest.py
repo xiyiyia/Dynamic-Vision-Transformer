@@ -14,7 +14,9 @@ with open('ic.csv', "w+") as csvFile:
                                                                                               '-Transformer/data/val/1/', f))]
     index = 0
     for img in img_list_1:
+        print(img)
         img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/2/' + img, index)
+        print(img)
         edges = cv.Canny(img, 224, 224)
         ic = -1 * math.log2(sum(sum(edges)))
         spamwriter.writerow(ic)
