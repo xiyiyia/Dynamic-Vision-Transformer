@@ -11,7 +11,7 @@ with open('ic.csv', "w+") as csvFile:
     spamwriter = csv.writer(csvFile, delimiter=',',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
     print(walk('~/Dynamic-Vision-Transformer/data/val/1/'))
-    b = [a for a in walk('~/Dynamic-Vision-Transformer/data/val/1/')]
+    b = [a for a in walk('/home/ubuntu/Dynamic-Vision-Transformer/data/val/1/')]
     print(b)
     for (dirpath, dirnames, filenames) in walk('~/Dynamic-Vision-Transformer/data/val/1/'):
         print(1)
