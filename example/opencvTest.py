@@ -14,29 +14,29 @@ with open('ic.csv', "w+") as csvFile:
                                                                                               '-Transformer/data/val/1/', f))]
     index = 0
     for img in img_list_1:
-        img = cv.imread('~/Dynamic-Vision-Transformer/data/val/2/' + img, index)
+        img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/2/' + img, index)
         edges = cv.Canny(img, 224, 224)
         ic = -1 * math.log2(sum(sum(edges)))
         spamwriter.writerow(ic)
         index += 1
         print(ic)
 
-    img_list_2 = [f for f in listdir('~/Dynamic-Vision-Transformer/data/val/2/') if isfile(join('~/Dynamic-Vision'
+    img_list_2 = [f for f in listdir('/home/ubuntu/Dynamic-Vision-Transformer/data/val/2/') if isfile(join('/home/ubuntu/Dynamic-Vision'
                                                                                               '-Transformer/data/val/2/', f))]
     index = 0
     for img in img_list_2:
-        img = cv.imread('~/Dynamic-Vision-Transformer/data/val/2/' + img, index)
+        img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/2/' + img, index)
         edges = cv.Canny(img, 224, 224)
         ic = -1 * math.log2(sum(sum(edges)))
         spamwriter.writerow(ic)
         index += 1
         print(ic)
 
-    img_list_3 = [f for f in listdir('~/Dynamic-Vision-Transformer/data/val/3/') if isfile(join('~/Dynamic-Vision'
+    img_list_3 = [f for f in listdir('/home/ubuntu/Dynamic-Vision-Transformer/data/val/3/') if isfile(join('/home/ubuntu/Dynamic-Vision'
                                                                                               '-Transformer/data/val/3/', f))]
     index = 0
     for img in img_list_3:
-        img = cv.imread('~/Dynamic-Vision-Transformer/data/val/3/' + img, index)
+        img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/3/' + img, index)
         edges = cv.Canny(img, 224, 224)
         ic = -1 * math.log2(sum(sum(edges)))
         spamwriter.writerow(ic)
