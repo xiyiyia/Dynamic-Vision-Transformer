@@ -10,8 +10,8 @@ import csv
 with open('ic.csv', "w+") as csvFile:
     spamwriter = csv.writer(csvFile, delimiter=',',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    img_list_1 = [f for f in listdir('~/Dynamic-Vision-Transformer/data/val/1/') if isfile(join('~/Dynamic-Vision'
-                                                                                              '-Transformer/data/val/1/', f))]
+    img_list_1 = [f for f in listdir('~/Dynamic-Vision-Transformer/data/val/1') if isfile(join('~/Dynamic-Vision'
+                                                                                              '-Transformer/data/val/1', f))]
     index = 0
     for img in img_list_1:
         img = cv.imread('~/Dynamic-Vision-Transformer/data/val/2/' + img, index)
