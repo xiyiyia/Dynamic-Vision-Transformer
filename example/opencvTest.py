@@ -32,7 +32,7 @@ def count_ic():
             img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/1/' + img, index)
             edges = cv.Canny(img, 224, 224)
             # ic = [-1 * math.log2(sum(sum(edges)))]
-            ic = sum(sum(edges))
+            ic = [sum(sum(edges))]
             spamwriter.writerow(ic)
             index += 1
             print(ic)
@@ -44,7 +44,7 @@ def count_ic():
             img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/2/' + img, index)
             edges = cv.Canny(img, 224, 224)
             ic = [-1 * math.log2(sum(sum(edges)))]
-            ic = sum(sum(edges))
+            ic = [sum(sum(edges))]
             spamwriter.writerow(ic)
             index += 1
             print(ic)
@@ -56,7 +56,7 @@ def count_ic():
             img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/3/' + img, index)
             edges = cv.Canny(img, 224, 224)
             ic = [-1 * math.log2(sum(sum(edges)))]
-            ic = sum(sum(edges))
+            ic = [sum(sum(edges))]
             spamwriter.writerow(ic)
             index += 1
             print(ic)
