@@ -18,7 +18,7 @@ with open('ic.csv', "w+") as csvFile:
         img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/1/' + img, index)
         print(img)
         edges = cv.Canny(img, 224, 224)
-        ic = -1 * math.log2(sum(sum(edges)))
+        ic = [-1 * math.log2(sum(sum(edges)))]
         spamwriter.writerow(ic)
         index += 1
         print(ic)
@@ -29,7 +29,7 @@ with open('ic.csv', "w+") as csvFile:
     for img in img_list_2:
         img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/2/' + img, index)
         edges = cv.Canny(img, 224, 224)
-        ic = -1 * math.log2(sum(sum(edges)))
+        ic = [-1 * math.log2(sum(sum(edges)))]
         spamwriter.writerow(ic)
         index += 1
         print(ic)
@@ -40,7 +40,7 @@ with open('ic.csv', "w+") as csvFile:
     for img in img_list_3:
         img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/3/' + img, index)
         edges = cv.Canny(img, 224, 224)
-        ic = -1 * math.log2(sum(sum(edges)))
+        ic = [-1 * math.log2(sum(sum(edges)))]
         spamwriter.writerow(ic)
         index += 1
         print(ic)
