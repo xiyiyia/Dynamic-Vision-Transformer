@@ -10,7 +10,7 @@ import csv
 with open('ic.csv', "w+") as csvFile:
     spamwriter = csv.writer(csvFile, delimiter=',',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    print(1)
+    print(walk('~/Dynamic-Vision-Transformer/data/val/1/'))
     for (dirpath, dirnames, filenames) in walk('~/Dynamic-Vision-Transformer/data/val/1/'):
         print(dirpath, dirnames, filenames)
         index = 0
