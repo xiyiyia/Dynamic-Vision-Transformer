@@ -30,7 +30,7 @@ def count_ic():
         index = 0
         for img in img_list_1:
             img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/1/' + img, index)
-            edges = cv.Canny(img, 224, 224)
+            edges = cv.Canny(img, 256, 256)
             ic = [-1 * math.log2(sum(sum(edges)))]
             spamwriter.writerow(ic)
             index += 1
