@@ -27,22 +27,24 @@ def count_ic():
                                 quotechar='|', quoting=csv.QUOTE_MINIMAL)
         img_list_1 = [f for f in listdir('/home/ubuntu/Dynamic-Vision-Transformer/data/val/1/') if isfile(join('/home/ubuntu/Dynamic-Vision'
                                                                                                   '-Transformer/data/val/1/', f))]
-        # index = 0
-        # for img in img_list_1:
-        #     img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/1/' + img, index)
-        #     edges = cv.Canny(img, 256, 256)
-        #     ic = [-1 * math.log2(sum(sum(edges)))]
-        #     spamwriter.writerow(ic)
-        #     index += 1
-        #     print(ic)
+        index = 0
+        for img in img_list_1:
+            img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/1/' + img, index)
+            edges = cv.Canny(img, 224, 224)
+            # ic = [-1 * math.log2(sum(sum(edges)))]
+            ic = sum(sum(edges))
+            spamwriter.writerow(ic)
+            index += 1
+            print(ic)
 
         img_list_2 = [f for f in listdir('/home/ubuntu/Dynamic-Vision-Transformer/data/val/2/') if isfile(join('/home/ubuntu/Dynamic-Vision'
                                                                                                   '-Transformer/data/val/2/', f))]
         index = 0
         for img in img_list_2:
             img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/2/' + img, index)
-            edges = cv.Canny(img, 256, 256)
+            edges = cv.Canny(img, 224, 224)
             ic = [-1 * math.log2(sum(sum(edges)))]
+            ic = sum(sum(edges))
             spamwriter.writerow(ic)
             index += 1
             print(ic)
@@ -52,8 +54,9 @@ def count_ic():
         index = 0
         for img in img_list_3:
             img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/3/' + img, index)
-            edges = cv.Canny(img, 256, 256)
+            edges = cv.Canny(img, 224, 224)
             ic = [-1 * math.log2(sum(sum(edges)))]
+            ic = sum(sum(edges))
             spamwriter.writerow(ic)
             index += 1
             print(ic)
