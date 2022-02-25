@@ -10,40 +10,38 @@ import csv
 with open('ic.csv', "w+") as csvFile:
     spamwriter = csv.writer(csvFile, delimiter=',',
                             quotechar='|', quoting=csv.QUOTE_MINIMAL)
-    print(walk('~/Dynamic-Vision-Transformer/data/val/1/'))
-    b = [a for a in walk('/home/ubuntu/Dynamic-Vision-Transformer/data/val/1/')]
-    print(b)
-    for (dirpath, dirnames, filenames) in walk('~/Dynamic-Vision-Transformer/data/val/1/'):
-        print(1)
-        print(dirpath, dirnames, filenames)
-        index = 0
-        for img in filenames:
-            img = cv.imread(dirpath + img, index)
-            edges = cv.Canny(img,224,224)
-            ic = -1 * math.log2(sum(sum(edges)))
-            spamwriter.writerow(ic)
-            index += 1
-            print(ic)
-    for (dirpath, dirnames, filenames) in walk('~/Dynamic-Vision-Transformer/data/val/2/'):
-        print(dirpath, dirnames, filenames)
-        index = 0
-        for img in filenames:
-            img = cv.imread(dirpath + img, index)
-            edges = cv.Canny(img,224,224)
-            ic = -1 * math.log2(sum(sum(edges)))
-            spamwriter.writerow(ic)
-            index += 1
-            print(ic)
-    for (dirpath, dirnames, filenames) in walk('~/Dynamic-Vision-Transformer/data/val/3/'):
-        print(dirpath, dirnames, filenames)
-        index = 0
-        for img in filenames:
-            img = cv.imread(dirpath + img, index)
-            edges = cv.Canny(img,224,224)
-            ic = -1 * math.log2(sum(sum(edges)))
-            spamwriter.writerow(ic)
-            index += 1
-            print(ic)
+    img_list_1 = [f for f in listdir('~/Dynamic-Vision-Transformer/data/val/1/') if isfile(join('~/Dynamic-Vision'
+                                                                                              '-Transformer/data/val/1/', f))]
+    index = 0
+    for img in img_list_1:
+        img = cv.imread('~/Dynamic-Vision-Transformer/data/val/2/' + img, index)
+        edges = cv.Canny(img, 224, 224)
+        ic = -1 * math.log2(sum(sum(edges)))
+        spamwriter.writerow(ic)
+        index += 1
+        print(ic)
+
+    img_list_2 = [f for f in listdir('~/Dynamic-Vision-Transformer/data/val/2/') if isfile(join('~/Dynamic-Vision'
+                                                                                              '-Transformer/data/val/2/', f))]
+    index = 0
+    for img in img_list_2:
+        img = cv.imread('~/Dynamic-Vision-Transformer/data/val/2/' + img, index)
+        edges = cv.Canny(img, 224, 224)
+        ic = -1 * math.log2(sum(sum(edges)))
+        spamwriter.writerow(ic)
+        index += 1
+        print(ic)
+
+    img_list_3 = [f for f in listdir('~/Dynamic-Vision-Transformer/data/val/3/') if isfile(join('~/Dynamic-Vision'
+                                                                                              '-Transformer/data/val/3/', f))]
+    index = 0
+    for img in img_list_3:
+        img = cv.imread('~/Dynamic-Vision-Transformer/data/val/3/' + img, index)
+        edges = cv.Canny(img, 224, 224)
+        ic = -1 * math.log2(sum(sum(edges)))
+        spamwriter.writerow(ic)
+        index += 1
+        print(ic)
 # plt.subplot(121),plt.imshow(img,cmap = 'gray')
 # plt.title('Original Image'), plt.xticks([]), plt.yticks([])
 # plt.subplot(122),plt.imshow(edges,cmap = 'gray')
