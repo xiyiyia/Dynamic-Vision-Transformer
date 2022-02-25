@@ -41,7 +41,7 @@ def count_ic():
         index = 0
         for img in img_list_2:
             img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/2/' + img, index)
-            edges = cv.Canny(img, 224, 224)
+            edges = cv.Canny(img, 512, 512)
             ic = [math.log2(1/sum(sum(edges)))]
             spamwriter.writerow(ic)
             index += 1
@@ -52,7 +52,7 @@ def count_ic():
         index = 0
         for img in img_list_3:
             img = cv.imread('/home/ubuntu/Dynamic-Vision-Transformer/data/val/3/' + img, index)
-            edges = cv.Canny(img, 224, 224)
+            edges = cv.Canny(img, 512, 512)
             ic = [* math.log2(1/sum(sum(edges)))]
             spamwriter.writerow(ic)
             index += 1
@@ -62,6 +62,5 @@ def count_ic():
 # plt.subplot(122),plt.imshow(edges,cmap = 'gray')
 # plt.title('Edge Image'), plt.xticks([]), plt.yticks([])
 # plt.show()
-
-count_average_ic()
 count_ic()
+count_average_ic()
