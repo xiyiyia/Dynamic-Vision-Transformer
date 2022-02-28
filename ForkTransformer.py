@@ -137,7 +137,7 @@ def main():
         mlp_model = mlp_model.cuda()
         # print(dynamic_threshold)
         model.load_state_dict(checkpoint['model_state_dict'])
-        # print(mlp_checkpoint.keys())
+        print(mlp_checkpoint.keys())
         mlp_model.load_state_dict(mlp_checkpoint['state_dict'])
         budgeted_batch_flops_list = []
         budgeted_batch_acc_list = []
