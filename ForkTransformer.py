@@ -201,13 +201,20 @@ def generate_logits(mlp_model, model, dataloader, T):
         with torch.no_grad():
             # print(input_var)
             list = []
+            num = [0.0, 0.0, 0.0]
             output = mlp_model(input_var)
             output = output.max(dim=1, keepdim=False)
-            print(output.values[target == 0])
+            list.append(output.values[target == 0])
+            list.append(output.values[target == 1])
+            list.append(output.values[target == 2])
             # list.append([output[target == 0]])
+            num[0] += list[0].sum()
+            num[1] += list[1].sum()
+            num[2] += list[2].sum()
             print(output)
             print(target)
-            less_less_token_output, less_token_output, normal_output, tl = model(input_var)
+
+            less_less_token_output, less_token_output, normal_output, tl = model(input_var, list)
 
             # if normal_output == [] and less_token_output == []:
             #     os.system('mv ' + path[0] + ' ./data/val/1/')
@@ -240,7 +247,7 @@ def generate_logits(mlp_model, model, dataloader, T):
         # for index in range(3):
         #     anytime_classification.append(top1[index].ave)
         # print(anytime_classification)
-
+    print('num', num)
     return torch.cat(logits_list, 1), torch.cat(targets_list, 0), [], ttl
 
 

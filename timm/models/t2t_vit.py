@@ -447,7 +447,7 @@ class DVT_T2t_vit_12_model(nn.Module):
         relations_to_be_reused_list = relations_to_be_reused_list[max_preds <= self.T[13][n_stage], :, :, :] # torch.index_select(relations_to_be_reused_list, 0, indice)
         return x, features_to_be_reused_list, relations_to_be_reused_list
 
-    def forward(self, x):
+    def forward(self, x, list):
 
         if self.feature_reuse == True and self.relation_reuse == True:
             tl = []
