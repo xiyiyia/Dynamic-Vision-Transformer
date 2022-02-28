@@ -137,7 +137,7 @@ def main():
         mlp_model = mlp_model.cuda()
         # print(dynamic_threshold)
         model.load_state_dict(checkpoint['model_state_dict'])
-        print(mlp_checkpoint.keys())
+        # print(mlp_checkpoint.keys())
         mlp_model.load_state_dict(mlp_checkpoint['state_dict_ema'])
         budgeted_batch_flops_list = []
         budgeted_batch_acc_list = []
@@ -192,7 +192,7 @@ def generate_logits(mlp_model, model, dataloader, T):
     for i, (x, target, path) in enumerate(dataloader):
         # a, b = dataloader.dataset.samples[i]
         # print(a, b, len(dataloader.dataset.samples))
-        print(i)
+        # print(i)
         # logits_temp = torch.zeros(3, x.size(0), 1000)
 
         target_var = target.cuda()
@@ -203,7 +203,7 @@ def generate_logits(mlp_model, model, dataloader, T):
             list = []
             output = mlp_model(input_var)
             output = output.max(dim=1, keepdim=False)
-            print(target == 0)
+            print(output.value[target == 0])
             # list.append([output[target == 0]])
             print(output)
             print(target)
