@@ -189,6 +189,7 @@ def generate_logits(mlp_model, model, dataloader, T):
     top1 = [AverageMeter() for _ in range(3)]
     model.eval()
     ttl = []
+    num = [0.0, 0.0, 0.0]
     for i, (x, target, path) in enumerate(dataloader):
         # a, b = dataloader.dataset.samples[i]
         # print(a, b, len(dataloader.dataset.samples))
@@ -201,7 +202,6 @@ def generate_logits(mlp_model, model, dataloader, T):
         with torch.no_grad():
             # print(input_var)
             list = []
-            num = [0.0, 0.0, 0.0]
             output = mlp_model(input_var)
             output = output.max(dim=1, keepdim=False)
             list.append(output.values[target == 0])
