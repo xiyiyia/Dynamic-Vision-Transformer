@@ -205,14 +205,16 @@ def generate_logits(mlp_model, model, dataloader, T):
             list = []
             output = mlp_model(input_var)
             output = output.max(dim=1, keepdim=False)
-            # print(output.values[output.values >= 8.9056])
-            output.values[output.values >= 8.9056] = 1
-            output.values[output.values < 7.9173] = 3
+            print(output.values[output.values >= 8.9056])
+            output.values[output.values >= 8.9056] = 0
+            output.values[output.values < 7.9173] = 2
             print(output.values.shape)
             for i in range(output.values.shape[0]):
-                if output.values[i] == 1 or output.values[i] == 3:
+                if output.values[i] == 0 or output.values[i] == 2:
                     continue
-                else: output.values[i] = 2
+                else:
+                    print(output.values[i])
+                    output.values[i] = 2
             for i in range(target.shape[0]):
                 if output.values[i] != target[i]:
                     count_error += 1
