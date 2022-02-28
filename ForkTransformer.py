@@ -96,8 +96,8 @@ def main():
             dynamic_threshold=dynamic_threshold)
         mlp_model = create_model(
             't2t_vit_7',
-            pretrained=False,
-            num_classes=3,
+            pretrained=True,
+            num_classes=1000,
             drop_rate=0.0,
             drop_connect_rate=None,
             drop_path_rate=0.1,
@@ -137,7 +137,7 @@ def main():
         # print(dynamic_threshold)
         model.load_state_dict(checkpoint['model_state_dict'])
         # print(mlp_checkpoint.keys())
-        mlp_model.load_state_dict(mlp_checkpoint['state_dict'])
+        # mlp_model.load_state_dict(mlp_checkpoint['state_dict'])
         budgeted_batch_flops_list = []
         budgeted_batch_acc_list = []
 
