@@ -109,7 +109,7 @@ def main():
             checkpoint_path='')
 
         traindir = args.data_url + 'train/'
-        valdir = args.data_url + 'test/'
+        valdir = args.data_url + 'train/'
 
         normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                          std=[0.229, 0.224, 0.225])
@@ -200,6 +200,7 @@ def generate_logits(mlp_model, model, dataloader, T):
         with torch.no_grad():
             # print(input_var)
             output = mlp_model(input_var)
+            output = output.max(dim=1, keepdim=False)
             print(output)
             print(target)
             less_less_token_output, less_token_output, normal_output, tl = model(input_var)
