@@ -98,7 +98,7 @@ def main():
             dynamic_threshold=dynamic_threshold)
         mlp_model = timm.create_model(
             't2t_vit_7',
-            pretrained=True)
+            pretrained=False)
         # mlp_model = create_model(
         #     't2t_vit_7',
         #     pretrained=True,
