@@ -110,7 +110,7 @@ def main():
             bn_eps=None,
             checkpoint_path='')
         traindir = args.data_url + 'train/'
-        valdir = args.data_url + 'train/'
+        valdir = args.data_url + 'val/'
 
         normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                          std=[0.229, 0.224, 0.225])
@@ -190,6 +190,7 @@ def generate_logits(mlp_model, model, dataloader, T):
     model.eval()
     ttl = []
     num = [0.0, 0.0, 0.0]
+    count_error = 0
     for i, (x, target, path) in enumerate(dataloader):
         # a, b = dataloader.dataset.samples[i]
         # print(a, b, len(dataloader.dataset.samples))
@@ -204,13 +205,20 @@ def generate_logits(mlp_model, model, dataloader, T):
             list = []
             output = mlp_model(input_var)
             output = output.max(dim=1, keepdim=False)
-            list.append(output.values[target == 0])
-            list.append(output.values[target == 1])
-            list.append(output.values[target == 2])
-            # list.append([output[target == 0]])
-            num[0] += list[0].sum()
-            num[1] += list[1].sum()
-            num[2] += list[2].sum()
+
+            output.values[output.values >= 8.9056] = 1
+            output.values[8.9056 > output.values >= 7.9173] = 2
+            output.values[7.9173 > output.values >= 7.1121] = 3
+            for i in range(target.shape[0]):
+                if output.values[i] != target[i]:
+                    count_error += 1
+            # list.append(output.values[target == 0])
+            # list.append(output.values[target == 1])
+            # list.append(output.values[target == 2])
+            # num[0] += list[0].sum()
+            # num[1] += list[1].sum()
+            # num[2] += list[2].sum()
+
             print(output)
             print(target)
 
@@ -248,6 +256,7 @@ def generate_logits(mlp_model, model, dataloader, T):
         #     anytime_classification.append(top1[index].ave)
         # print(anytime_classification)
     print('num', num)
+    print(count_error)
     return torch.cat(logits_list, 1), torch.cat(targets_list, 0), [], ttl
 
 
