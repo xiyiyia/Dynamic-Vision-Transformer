@@ -153,7 +153,7 @@ class T2T_ViT(nn.Module):
         x = self.pos_drop(x)
 
         for blk in self.blocks:
-            # print(type(x))
+            print(type(x))
             x, _ = blk(x)
 
         x = self.norm(x)
