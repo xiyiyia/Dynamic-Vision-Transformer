@@ -64,7 +64,7 @@ class ImageFolderWithPaths(datasets.ImageFolder):
 def main():
     # load pretrained model
     checkpoint = torch.load(args.checkpoint_path)
-    mlp_checkpoint = torch.load('checkpoint/T2t_vit_7-224.pth.tar')
+    mlp_checkpoint = torch.load('checkpoint/71.7_T2T_ViT_7.pth.tar')
     # print(1)
     try:
         flops = checkpoint['flops']
@@ -96,24 +96,19 @@ def main():
             bn_eps=None,
             checkpoint_path='',
             dynamic_threshold=dynamic_threshold)
-        model_names = timm.list_models(pretrained=True)
-        print(model_names)
-        mlp_model = timm.create_model(
+        mlp_model = create_model(
             't2t_vit_7',
-            pretrained=False)
-        # mlp_model = create_model(
-        #     't2t_vit_7',
-        #     pretrained=True,
-        #     num_classes=1000,
-        #     drop_rate=0.0,
-        #     drop_connect_rate=None,
-        #     drop_path_rate=0.1,
-        #     drop_block_rate=None,
-        #     global_pool=None,
-        #     bn_tf=False,
-        #     bn_momentum=None,
-        #     bn_eps=None,
-        #     checkpoint_path='')
+            pretrained=True,
+            num_classes=1000,
+            drop_rate=0.0,
+            drop_connect_rate=None,
+            drop_path_rate=0.1,
+            drop_block_rate=None,
+            global_pool=None,
+            bn_tf=False,
+            bn_momentum=None,
+            bn_eps=None,
+            checkpoint_path='')
         traindir = args.data_url + 'train/'
         valdir = args.data_url + 'train/'
 
@@ -208,6 +203,7 @@ def generate_logits(mlp_model, model, dataloader, T):
             list = []
             output = mlp_model(input_var)
             output = output.max(dim=1, keepdim=False)
+            print(output[target == 0])
             # list.append([output[target == 0]])
             print(output)
             print(target)
