@@ -96,18 +96,20 @@ def main():
             dynamic_threshold=dynamic_threshold)
         mlp_model = create_model(
             't2t_vit_7',
-            pretrained=True,
-            num_classes=1000,
-            drop_rate=0.0,
-            drop_connect_rate=None,
-            drop_path_rate=0.1,
-            drop_block_rate=None,
-            global_pool=None,
-            bn_tf=False,
-            bn_momentum=None,
-            bn_eps=None,
-            checkpoint_path='')
-
+            pretrained=True)
+        # mlp_model = create_model(
+        #     't2t_vit_7',
+        #     pretrained=True,
+        #     num_classes=1000,
+        #     drop_rate=0.0,
+        #     drop_connect_rate=None,
+        #     drop_path_rate=0.1,
+        #     drop_block_rate=None,
+        #     global_pool=None,
+        #     bn_tf=False,
+        #     bn_momentum=None,
+        #     bn_eps=None,
+        #     checkpoint_path='')
         traindir = args.data_url + 'train/'
         valdir = args.data_url + 'train/'
 
@@ -201,6 +203,7 @@ def generate_logits(mlp_model, model, dataloader, T):
             # print(input_var)
             output = mlp_model(input_var)
             output = output.max(dim=1, keepdim=False)
+            list[0] = output[target == 0]
             print(output)
             print(target)
             less_less_token_output, less_token_output, normal_output, tl = model(input_var)
