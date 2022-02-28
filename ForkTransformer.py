@@ -208,7 +208,7 @@ def generate_logits(mlp_model, model, dataloader, T):
             print(output.values[output.values >= 8.9056])
             output.values[output.values >= 8.9056] = 0
             output.values[output.values < 7.9173] = 2
-            print(output.values.shape)
+            print(output.values)
             for i in range(output.values.shape[0]):
                 if output.values[i] == 0 or output.values[i] == 2:
                     continue
