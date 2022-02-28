@@ -210,8 +210,9 @@ def generate_logits(mlp_model, model, dataloader, T):
             output.values[output.values < 7.9173] = 3
             print(output.values.shape)
             for i in range(output.values.shape[0]):
-                if output.values[i] != 1 or output.values[i] != 3:
-                    output.values[i] = 2
+                if output.values[i] == 1 or output.values[i] == 3:
+                    continue
+                else: output.values[i] = 2
             for i in range(target.shape[0]):
                 if output.values[i] != target[i]:
                     count_error += 1
