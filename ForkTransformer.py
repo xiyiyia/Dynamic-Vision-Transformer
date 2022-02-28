@@ -3,6 +3,8 @@ import torchvision.datasets as datasets
 import matplotlib.pyplot as plt
 import torch.multiprocessing
 
+import timm
+
 torch.multiprocessing.set_sharing_strategy('file_system')
 
 import csv
@@ -94,7 +96,7 @@ def main():
             bn_eps=None,
             checkpoint_path='',
             dynamic_threshold=dynamic_threshold)
-        mlp_model = create_model(
+        mlp_model = timm.create_model(
             't2t_vit_7',
             pretrained=True)
         # mlp_model = create_model(
