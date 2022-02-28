@@ -96,6 +96,8 @@ def main():
             bn_eps=None,
             checkpoint_path='',
             dynamic_threshold=dynamic_threshold)
+        model_names = timm.list_models(pretrained=True)
+        print(model_names)
         mlp_model = timm.create_model(
             't2t_vit_7',
             pretrained=False)
