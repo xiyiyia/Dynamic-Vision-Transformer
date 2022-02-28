@@ -138,7 +138,7 @@ def main():
         # print(dynamic_threshold)
         model.load_state_dict(checkpoint['model_state_dict'])
         print(mlp_checkpoint.keys())
-        mlp_model.load_state_dict(mlp_checkpoint['state_dict'])
+        mlp_model.load_state_dict(mlp_checkpoint['state_dict_ema'])
         budgeted_batch_flops_list = []
         budgeted_batch_acc_list = []
 
