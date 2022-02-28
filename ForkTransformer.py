@@ -205,7 +205,7 @@ def generate_logits(mlp_model, model, dataloader, T):
             # print(input_var)
             output = mlp_model(input_var)
             output = output.max(dim=1, keepdim=False)
-            list[0] = output[target == 0]
+            list[0].append(output[target == 0])
             print(output)
             print(target)
             less_less_token_output, less_token_output, normal_output, tl = model(input_var)
