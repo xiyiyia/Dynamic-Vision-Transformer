@@ -127,7 +127,7 @@ class Block(nn.Module):
             x = torch.cat((x, feature_temp), dim=2)
 
         x = identity + self.drop_path(self.mlp(self.norm2(x)))
-        print(type(x))
+        # print(type(x))
         return x, relation
 
 
