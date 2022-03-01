@@ -189,7 +189,7 @@ def generate_logits(mlp_model, model, dataloader, T):
     top1 = [AverageMeter() for _ in range(3)]
     model.eval()
     ttl = []
-    num = [0.0, 0.0, 0.0]
+    num = [9999.0, 9999.0, 9999.0]
     count_error = 0
     for i, (x, target, path) in enumerate(dataloader):
         # a, b = dataloader.dataset.samples[i]
@@ -205,21 +205,24 @@ def generate_logits(mlp_model, model, dataloader, T):
             list = []
             output = mlp_model(input_var)
             output = output.max(dim=1, keepdim=False)
-            print(output.values[output.values >= 8.9056])
-            output.values[output.values >= 8.9056] = 0
-            output.values[torch.logical_and(output.values >= 7.9173, output.values < 8.9056)] = 1
-            output.values[torch.logical_and(output.values > 2, output.values < 7.9173)] = 2
-            print(output.values)
-            for i in range(target.shape[0]):
-                if output.values[i] != target[i]:
-                    count_error += 1
-            # list.append(output.values[target == 0])
-            # list.append(output.values[target == 1])
-            # list.append(output.values[target == 2])
+            # output.values[output.values >= 8.9056] = 0
+            # output.values[torch.logical_and(output.values >= 7.9173, output.values < 8.9056)] = 1
+            # output.values[torch.logical_and(output.values > 2, output.values < 7.9173)] = 2
+            # for i in range(target.shape[0]):
+            #     if output.values[i] != target[i]:
+            #         count_error += 1
+            list.append(output.values[target == 0])
+            list.append(output.values[target == 1])
+            list.append(output.values[target == 2])
             # num[0] += list[0].sum()
             # num[1] += list[1].sum()
             # num[2] += list[2].sum()
-
+            if list[0].min() < num[0]:
+                num[0] = list[0].min()
+            if list[1].min() < num[1]:
+                num[1] = list[1].min()
+            if list[2].min() < num[2]:
+                num[2] = list[2].min()
             print(output)
             print(target)
 
