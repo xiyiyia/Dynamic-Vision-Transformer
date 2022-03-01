@@ -219,12 +219,13 @@ def generate_logits(mlp_model, model, dataloader, T):
             # num[1] += list[1].sum()
             # num[2] += list[2].sum()
             if torch.min(list[0]) < num[0]:
-                if torch.min(list[0]) < 5.0:
-                    print(torch.min(list[0]))
+                print(torch.min(list[0]))
                 num[0] = torch.min(list[0])
             if torch.min(list[1]) < num[1]:
+                print(torch.min(list[1]))
                 num[1] = torch.min(list[1])
             if torch.min(list[2]) < num[2]:
+                print(torch.min(list[2]))
                 num[2] = torch.min(list[2])
             print(output)
             print(target)
