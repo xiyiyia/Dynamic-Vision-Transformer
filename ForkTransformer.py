@@ -110,7 +110,7 @@ def main():
             bn_eps=None,
             checkpoint_path='')
         traindir = args.data_url + 'train/'
-        valdir = args.data_url + 'train/'
+        valdir = args.data_url + 'val/'
 
         normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                          std=[0.229, 0.224, 0.225])
@@ -205,28 +205,28 @@ def generate_logits(mlp_model, model, dataloader, T):
             list = []
             output = mlp_model(input_var)
             output = output.max(dim=1, keepdim=False)
-            # output.values[output.values >= 8.9056] = 0
-            # output.values[torch.logical_and(output.values >= 7.9173, output.values < 8.9056)] = 1
-            # output.values[torch.logical_and(output.values > 2, output.values < 7.9173)] = 2
-            # for i in range(target.shape[0]):
-            #     if output.values[i] != target[i]:
-            #         count_error += 1
-            list.append(output.values[target == 0])
-            list.append(output.values[target == 1])
-            list.append(output.values[target == 2])
-            print(list[0], list[1], list[2])
-            # num[0] += list[0].sum()
-            # num[1] += list[1].sum()
-            # num[2] += list[2].sum()
-            if torch.min(list[0]) < num[0]:
-                print(torch.min(list[0]))
-                num[0] = torch.min(list[0])
-            if torch.min(list[1]) < num[1]:
-                print(torch.min(list[1]))
-                num[1] = torch.min(list[1])
-            if torch.min(list[2]) < num[2]:
-                print(torch.min(list[2]))
-                num[2] = torch.min(list[2])
+            output.values[output.values >= 8.9056 - 0.9] = 0
+            output.values[torch.logical_and(output.values >= 7.9173 - 1, output.values < 8.9056 - 0.9)] = 1
+            output.values[torch.logical_and(output.values > 2, output.values < 7.9173 - 1)] = 2
+            for i in range(target.shape[0]):
+                if output.values[i] != target[i]:
+                    count_error += 1
+            # list.append(output.values[target == 0])
+            # list.append(output.values[target == 1])
+            # list.append(output.values[target == 2])
+            # print(list[0], list[1], list[2])
+            # # num[0] += list[0].sum()
+            # # num[1] += list[1].sum()
+            # # num[2] += list[2].sum()
+            # if torch.min(list[0]) < num[0]:
+            #     print(torch.min(list[0]))
+            #     num[0] = torch.min(list[0])
+            # if torch.min(list[1]) < num[1]:
+            #     print(torch.min(list[1]))
+            #     num[1] = torch.min(list[1])
+            # if torch.min(list[2]) < num[2]:
+            #     print(torch.min(list[2]))
+            #     num[2] = torch.min(list[2])
             print(output)
             print(target)
 
