@@ -205,9 +205,9 @@ def generate_logits(mlp_model, model, dataloader, T):
             list = []
             output = mlp_model(input_var)
             output = output.max(dim=1, keepdim=False)
-            output.values[output.values >= 8.9056 - 0.0625] = 0
-            output.values[torch.logical_and(output.values >= 7.9173 - 0.0625, output.values < 8.9056 - 0.0625)] = 1
-            output.values[torch.logical_and(output.values > 2, output.values < 7.9173 - 0.0625)] = 2
+            output.values[output.values >= 8.9056 - 0.03125] = 0
+            output.values[torch.logical_and(output.values >= 7.9173 - 0.03125, output.values < 8.9056 - 0.03125)] = 1
+            output.values[torch.logical_and(output.values > 2, output.values < 7.9173 - 0.03125)] = 2
             for i in range(target.shape[0]):
                 if output.values[i] != target[i]:
                     count_error += 1
