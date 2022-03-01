@@ -214,6 +214,7 @@ def generate_logits(mlp_model, model, dataloader, T):
             list.append(output.values[target == 0])
             list.append(output.values[target == 1])
             list.append(output.values[target == 2])
+            print(list[0], list[1], list[2])
             # num[0] += list[0].sum()
             # num[1] += list[1].sum()
             # num[2] += list[2].sum()
